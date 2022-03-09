@@ -18,6 +18,7 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.update
 import org.joda.time.DateTime
 
 class AntaeusDal(private val db: Database) {
@@ -49,6 +50,14 @@ class AntaeusDal(private val db: Database) {
                     )
                 }
                 .map { it.toInvoice() }
+        }
+    }
+
+    fun setInvoiceStatus(id: Int, status: InvoiceStatus) {
+        transaction(db) {
+            InvoiceTable.update ({ InvoiceTable.id eq id }) {
+                it[InvoiceTable.status] = status.name
+            }
         }
     }
 

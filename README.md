@@ -6,6 +6,7 @@
 * I set up the sqlite database to be created in the working directory for easier debugging
 * `BillingService` will need a way to get all the due invoices, so I added a query to `AntaeusDal`. An invoice is due if the due date is reached and the invoice is marked `PENDING`.
 * I created a REST endpoint to quickly test that the query only returns due invoices
+* I created a scheduler that queries the database for due invoices every hour. If an invoice is created on the same day it can still get processed that same day
 
 ## Antaeus
 Antaeus (/ænˈtiːəs/), in Greek mythology, a giant of Libya, the son of the sea god Poseidon and the Earth goddess Gaia. He compelled all strangers who were passing through the country to wrestle with him. Whenever Antaeus touched the Earth (his mother), his strength was renewed, so that even if thrown to the ground, he was invincible. Heracles, in combat with him, discovered the source of his strength and, lifting him up from Earth, crushed him to death.
