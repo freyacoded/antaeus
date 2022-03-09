@@ -17,7 +17,7 @@ internal fun setupInitialData(dal: AntaeusDal) {
         )
     }
 
-    val dueDates = listOf("2021-11-01", "2021-12-01", "2022-01-01", "2022-02-01", "2022-03-01")
+    val dueDates = listOf("2021-11-01", "2021-12-01", "2022-01-01", "2022-02-01", "2022-03-01", "2022-04-01")
         .map { DateTime.parse(it) }
 
     customers.forEach { customer ->
