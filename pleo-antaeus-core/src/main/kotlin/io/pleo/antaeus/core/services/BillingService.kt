@@ -24,11 +24,15 @@ class BillingService(
     }
 
     private fun processInvoices() {
-        val invoices = invoiceService.fetchDue()
-        if (invoices.isEmpty()) return
-        logger.info { "Processing ${invoices.size} invoices" }
+        try {
+            val invoices = invoiceService.fetchDue()
+            if (invoices.isEmpty()) return
+            logger.info { "Processing ${invoices.size} invoices" }
 
-        invoices.forEach { processInvoice(it) }
+            invoices.forEach { processInvoice(it) }
+        } catch (e: Exception) {
+            logger.error(e) { "Error processing invoices" }
+        }
     }
 
     internal fun processInvoice(invoice: Invoice) {
