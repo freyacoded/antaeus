@@ -3,10 +3,12 @@
 * Docker is the recommended way to run the application. I frequently use docker, but for development I prefer running directly on the host, so I install sqlite.
 * My JVM version is too recent for Gradle, so I update Gradle from 6.2 to 6.3.
 * As I don't want to attempt to charge invoices multiple times, and the invoices need to be charged on a certain first day of the month, I've added the due date field and the `PAYMENT_REJECTED` enum value.
-* I set up the sqlite database to be created in the working directory for easier debugging
+* I set up the sqlite database to be created in the working directory for easier debugging.
 * `BillingService` will need a way to get all the due invoices, so I added a query to `AntaeusDal`. An invoice is due if the due date is reached and the invoice is marked `PENDING`.
-* I created a REST endpoint to quickly test that the query only returns due invoices
-* I created a scheduler that queries the database for due invoices every hour. If an invoice is created on the same day it can still get processed that same day
+* I created a REST endpoint to quickly test that the query only returns due invoices.
+* I created a scheduler that queries the database for due invoices every hour. If an invoice is created on the same day it can still get processed that same day.
+* The scheduler works on a single thread and the calls to the database and payment provider are blocking. This could be considered bad in terms of scalability, but is unlikely to become an issue as low throughput is expected. For greater scalability the calls could be made asynchronous.
+* I added error handling to the billing service. An invoice may now be marked with the `ERROR` status if there is a problem with currency mismatch or an unknown customer. When either of those two errors occur we won't retry, but for other error we will.
 
 ## Antaeus
 Antaeus (/ænˈtiːəs/), in Greek mythology, a giant of Libya, the son of the sea god Poseidon and the Earth goddess Gaia. He compelled all strangers who were passing through the country to wrestle with him. Whenever Antaeus touched the Earth (his mother), his strength was renewed, so that even if thrown to the ground, he was invincible. Heracles, in combat with him, discovered the source of his strength and, lifting him up from Earth, crushed him to death.

@@ -30,11 +30,13 @@ class BillingService(
                     invoiceService.markRejected(invoice)
                 }
             } catch (e: CustomerNotFoundException) {
-
+                logger.error(e) { "Attempt to charge invoice ${invoice.id} with unknown customer ${invoice.customerId}" }
+                invoiceService.markErrored(invoice)
             } catch (e: CurrencyMismatchException) {
-
+                logger.error(e) { "Attempt to charge invoice ${invoice.id} of customer ${invoice.customerId} with a mismatching currency" }
+                invoiceService.markErrored(invoice)
             } catch (e: Exception) {
-
+                logger.error(e) { "Encountered exception while processing invoice ${invoice.id}" }
             }
         }
     }

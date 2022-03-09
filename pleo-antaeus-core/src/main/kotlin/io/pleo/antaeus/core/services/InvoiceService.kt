@@ -29,4 +29,8 @@ class InvoiceService(private val dal: AntaeusDal) {
     fun markRejected(invoice: Invoice) {
         dal.setInvoiceStatus(invoice.id, InvoiceStatus.PAYMENT_REJECTED)
     }
+
+    fun markErrored(invoice: Invoice) {
+        dal.setInvoiceStatus(invoice.id, InvoiceStatus.ERROR)
+    }
 }
