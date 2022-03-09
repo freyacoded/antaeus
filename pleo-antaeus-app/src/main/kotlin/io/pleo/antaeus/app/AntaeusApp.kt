@@ -29,7 +29,8 @@ fun main() {
     // The tables to create in the database.
     val tables = arrayOf(InvoiceTable, CustomerTable)
 
-    val dbFile: File = File.createTempFile("antaeus-db", ".sqlite")
+    val dbFile = File("antaeus-db.sqlite")
+    dbFile.createNewFile()
     // Connect to the database and create the needed tables. Drop any existing data.
     val db = Database
         .connect(url = "jdbc:sqlite:${dbFile.absolutePath}",
