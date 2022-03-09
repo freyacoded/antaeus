@@ -5,6 +5,7 @@ import io.pleo.antaeus.models.Currency
 import io.pleo.antaeus.models.Invoice
 import io.pleo.antaeus.models.InvoiceStatus
 import io.pleo.antaeus.models.Money
+import org.joda.time.DateTime
 import java.math.BigDecimal
 import kotlin.random.Random
 
@@ -16,15 +17,19 @@ internal fun setupInitialData(dal: AntaeusDal) {
         )
     }
 
+    val dueDates = listOf("2021-11-01", "2021-12-01", "2022-01-01", "2022-02-01", "2022-03-01")
+        .map { DateTime.parse(it) }
+
     customers.forEach { customer ->
-        (1..10).forEach {
+        dueDates.forEach { due ->
             dal.createInvoice(
                 amount = Money(
                     value = BigDecimal(Random.nextDouble(10.0, 500.0)),
                     currency = customer.currency
                 ),
                 customer = customer,
-                status = if (it == 1) InvoiceStatus.PENDING else InvoiceStatus.PAID
+                dueDate = due,
+                status = if(due.isAfter(DateTime.parse("2022-02-01").toInstant())) InvoiceStatus.PENDING else InvoiceStatus.PAID
             )
         }
     }
